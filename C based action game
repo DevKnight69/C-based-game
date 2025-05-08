@@ -1,6 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <string.h>
+#include <time.h>
 
 typedef struct {
     char name[50];
@@ -97,6 +98,38 @@ void wizard_special_attack(void* self, void* target) {
         printf("%s ÖZEL SALDIRI İÇİN YETERLİ MANAYA SAHİP DEĞİL!\n", wiz->base.name);
     }
 }
+
+int main(){
+    srand(time(NULL));
+    int choice;
+    Character* player = NULL;
+    Character* enemy = NULL;
+
+    printf("Karakterinizi Seçiniz:\n");
+    printf("1. Savaşçı\n");
+    printf("2. Büyücü\n");
+    printf("Seçiminiz: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) 
+        player = (Character*)new_warrior("Savaşçı");
+
+    else if (choice == 2)
+        player = (Character*)new_wizard("Büyücü");
+
+    else {
+        printf("Geçersiz seçim!\n");
+        return 1;
+    }
+    
+    int enemy_type = rand() % 2;
+    if (enemy_type == 0) 
+        enemy = (Character*)new_warrior("Düşman Savaşçı");
+    else 
+        enemy = (Character*)new_wizard("Düşman Büyücü");
+
+        printf("\n === SAVAŞ BAŞLIYOOOOOOR === \n\n");
+}}
 
 
 
