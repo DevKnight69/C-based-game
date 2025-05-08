@@ -12,6 +12,11 @@ typedef struct {
     void (*special_atack)(void* self, void* target);
 }Character;
 
+typedef struct {
+    Character base;
+    int rage; //savaşçının özel atağı
+}Warrior;
+
 Warrior* new_warrior(const char* name){
     Warrior* w = malloc(sizeof(Warrior));
     strcpy(w->base.name, name, sizeof(w->base.name));
@@ -23,11 +28,6 @@ Warrior* new_warrior(const char* name){
     w->rage = 20;
     return w;
 }
-
-typedef struct {
-    Character base;
-    int rage; //savaşçının özel atağı
-}Warrior;
 
 void warrior_attack(void* self, void* target) {
     Warrior* warrior = (Warrior*)self;
@@ -54,4 +54,51 @@ void warrior special_atack(void* self, void* target) {
         printf("%s ÖZEL SALDIRI İÇİN YETERLİ ÖFKE YOK!\n", w->base.name);
     }
 }
+
+typedef struct {
+    Character base;
+    int supernova; //büyücünün özel atağı
+}Wizard;
+
+Wizard* new_wizard(const char* name){
+    Wizard* wiz = malloc(sizeof(Wizard));
+    strcpy(wiz->base.name, name, sizeof(wiz->base.name));
+    wiz ->base.health = 100;
+    wiz ->base.attack_power = 10;
+    wiz ->base.attack = wizard_attack;
+    wiz ->base.defend = wizard_defend;
+    wiz ->base.special_atack = wizard_special_attack;
+    wiz->supernova = 20;
+    return wiz;
+}
+
+void wizard_attack(void* self, void* target) {
+    Wizard* wizard = (Wizard*)self;
+    Character* enemy = (Character*)target;
+    printf("%s SALDIRIYOR (%d hasar!)\n", wizard->base.name, enemy->name, wizard->base.attack);
+    enemy->defend(enemy, wizard->base.attack);
+}
+
+void wizard_defend(void* self, int damage) {
+    Wizard* wizard = (Wizard*)self;
+    wizard->base.health -= damage;
+    printf("%s HASAR ALINDI! (kalan can %d.)\n", wizard->base.name, damage, wizard->base.health);
+}
+
+void wizard_special_attack(void* self, void* target) {
+    Wizard* wiz = (Wizard*)self;
+    Character* defender = (Character*)target;
+
+    if (wiz->supernova >= 20){
+        printf("%s ÖZEL SALDIRI YAPIYOR (%d hasar!)\n", wiz->base.name, defender->name, wiz->supernova);
+        defender->defend(defender, wiz->supernova);
+        wiz->supernova = 0;
+    } else {
+        printf("%s ÖZEL SALDIRI İÇİN YETERLİ MANAYA SAHİP DEĞİL!\n", wiz->base.name);
+    }
+}
+
+
+
+
 
