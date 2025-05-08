@@ -2,6 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Run Game",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/game.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "console": "externalTerminal"
+    },
+    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
@@ -9,7 +19,7 @@
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Users/Lenovo/Desktop/C based game",
-      "program": "c:/Users/Lenovo/Desktop/C based game/build/Debug/outDebug",
+      "program": "c:/Users/Lenovo/Desktop/C based game/game.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build game",
+        "type": "shell",
+        "command": "gcc",
+        "args": [
+          "c_based_action_game.c",
+          "-o",
+          "game.exe"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"]
+      }
+    ]
+  }
+  
