@@ -1,0 +1,57 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h>
+
+typedef struct {
+    char name[50];
+    int attack_power;
+    int health;
+
+    void (*attack)(void* self, void* target);
+    void (*defend)(void* self, int damage);
+    void (*special_atack)(void* self, void* target);
+}Character;
+
+Warrior* new_warrior(const char* name){
+    Warrior* w = malloc(sizeof(Warrior));
+    strcpy(w->base.name, name, sizeof(w->base.name));
+    w ->base.health =  100;
+    w ->base.attack_power = 20;
+    w ->base.attack = warrior_attack;
+    w ->base.defend = warrior_defend;
+    w ->base.special_atack = warrior_special_attack;
+    w->rage = 20;
+    return w;
+}
+
+typedef struct {
+    Character base;
+    int rage; //savaşçının özel atağı
+}Warrior;
+
+void warrior_attack(void* self, void* target) {
+    Warrior* warrior = (Warrior*)self;
+    Character* enemy = (Character*)target;
+    printf("%s SALDIRIYOR (%d hasar!)\n", warrior->base.name, enemy->name, warrior->base.attack);
+    enemy->defend(enemy, warrior->base.attack);
+}
+
+void warrior_defend(void* self, int damage) {
+    Warrior* warrior = (Warrior*)self;
+    warrior->base.health -= damage;
+    printf("%s HASAR ALINDI! (kalan can %d.)\n", warrior->base.name, damage, warrior->base.health);
+}
+
+void warrior special_atack(void* self, void* target) {
+    warrior* w = (warrior*)self;
+    Character* defender = (Character*)target;
+
+    if (w->rage >= 20){
+        printf("%s ÖZEL SALDIRI YAPIYOR (%d hasar!)\n", w->base.name, defender->name, w->rage);
+        defender->defend(defender, w->rage);
+        w->rage = 0;
+    } else {
+        printf("%s ÖZEL SALDIRI İÇİN YETERLİ ÖFKE YOK!\n", w->base.name);
+    }
+}
+
